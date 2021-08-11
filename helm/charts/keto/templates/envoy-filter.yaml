@@ -1,0 +1,23 @@
+{{- if .Values.istio.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: {{ include "keto.fullname" . }}-grpc-web-filter
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "keto.labels" . | nindent 4 }}
+spec:
+  workloadSelector:
+    labels:
+       app: {{ include "keto.name" . }}
+  configPatches:
+  - applyTo: HTTP_FILTER
+    match:
+      context: SIDECAR_INBOUND
+    patch:
+      operation: INSERT_FIRST
+      value:
+        name: envoy.filters.http.grpc_web
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.filters.http.grpc_web.v3.GrpcWeb
+{{- end }}

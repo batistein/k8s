@@ -11,9 +11,9 @@ spec:
   type: {{ .Values.service.read.type }}
   ports:
     - port: {{ .Values.service.read.port }}
-      targetPort: http-read
+      targetPort: {{ if .Values.istio.enabled }}grpc-read{{ else }}http-read{{ end }}
       protocol: TCP
-      name: http-read
+      name: {{ if .Values.istio.enabled }}grpc-read{{ else }}http-read{{ end }}
   selector:
     app.kubernetes.io/name: {{ include "keto.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

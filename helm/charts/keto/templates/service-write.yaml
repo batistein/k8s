@@ -11,9 +11,9 @@ spec:
   type: {{ .Values.service.write.type }}
   ports:
     - port: {{ .Values.service.write.port }}
-      targetPort: http-write
+      targetPort: {{ if .Values.istio.enabled }}grpc-write{{ else }}http-write{{ end }}
       protocol: TCP
-      name: http-write
+      name: {{ if .Values.istio.enabled }}grpc-write{{ else }}http-write{{ end }}
   selector:
     app.kubernetes.io/name: {{ include "keto.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

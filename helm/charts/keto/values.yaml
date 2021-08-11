@@ -194,3 +194,6 @@ pdb:
   enabled: false
   spec:
     minAvailable: 1
+
+istio:
+  enabled: true
