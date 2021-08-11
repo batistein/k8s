@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "keto.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "keto.labels" . | nindent 4 }}
 spec:

@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ include "hydra.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "hydra.labels" . | nindent 4 }}
 
