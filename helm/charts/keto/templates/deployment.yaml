@@ -63,21 +63,21 @@ spec:
             - --config
             - /etc/config/keto.yaml
           ports:
-            - name: {{ if .Values.istio.enabled }}http2-read{{ else }}http-read{{ end }}
+            - name: {{ if .Values.istio.enabled }}tcp-read{{ else }}http-read{{ end }}
               containerPort: {{ .Values.keto.config.serve.read.port }}
               protocol: TCP
-            - name: {{ if .Values.istio.enabled }}http2-write{{ else }}http-write{{ end }}
+            - name: {{ if .Values.istio.enabled }}tcp-write{{ else }}http-write{{ end }}
               containerPort: {{ .Values.keto.config.serve.write.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
               path: /health/alive
-              port: {{ if .Values.istio.enabled }}http2-write{{ else }}http-write{{ end }}
+              port: {{ if .Values.istio.enabled }}tcp-write{{ else }}http-write{{ end }}
             {{- toYaml .Values.deployment.livenessProbe | nindent 12 }}
           readinessProbe:
             httpGet:
               path: /health/ready
-              port: {{ if .Values.istio.enabled }}http2-write{{ else }}http-write{{ end }}
+              port: {{ if .Values.istio.enabled }}tcp-write{{ else }}http-write{{ end }}
           {{- toYaml .Values.deployment.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
